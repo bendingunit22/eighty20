@@ -1,4 +1,4 @@
-import { FormGroup, Input, Form, Button } from 'reactstrap';
+import { FormGroup, Input, Form, Button, Col, Label, Container } from 'reactstrap';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -18,7 +18,7 @@ function App() {
     // add content type header to object
     myHeaders.append("Content-Type", "application/json");
     // using built in JSON utility package turn object to string and store in a variable
-    var raw = JSON.stringify({"firstName":formJson.firstName,"lastName":formJson.lastName});
+    var raw = JSON.stringify({"date":formJson.date,"easy":formJson.easy, "hard":formJson.hard, "kilometers":formJson.kilometers});
     // create a JSON object with parameters for API call and store in a variable
     console.log(raw)
     
@@ -40,27 +40,85 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+      <Container fluid>
         <Form onSubmit={handleSubmit}>
-            <FormGroup>
-              <Input
-                id="firstName"
-                name="firstName"
-                placeholder="First name"
-                type="string">
-              </Input>
-            </FormGroup>
-            <FormGroup>
-              <Input
-                id="lastName"
-                name="lastName"
-                placeholder="Last name"
-                type="string">
-              </Input>
-            </FormGroup>
-            <Button>
-              Upload
-            </Button>
-        </Form>
+              <FormGroup row>
+                <Label
+                  for="date"
+                  xl={2}
+                >
+                  Date
+                </Label>
+                <Col xl={10}>
+                  <Input
+                    id="date"
+                    name="date"
+                    placeholder="1970-01-01"
+                    type="date"
+                  >
+                  </Input>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+              <Label
+                  for="easy"
+                  sm={2}
+                >
+                  Easy
+                </Label>
+                <Col xl={10}
+                >
+                  <Input
+                    id="easy"
+                    name="easy"
+                    placeholder="0"
+                    type="integer"
+                  >
+                  </Input>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+              <Label
+                  for="hard"
+                  sm={2}
+                >
+                  Hard
+                </Label>
+                <Col xl={10}
+                >
+                  <Input
+                    id="hard"
+                    name="hard"
+                    placeholder="0"
+                    type="integer"
+                  >
+                  </Input>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+              <Label
+                  for="kilometers"
+                  sm={2}
+                >
+                  Kilometers
+                </Label>
+                <Col xl={10}
+                >
+                  <Input
+                    id="kilometers"
+                    name="kilometers"
+                    placeholder="0"
+                    type="float"
+                  >
+                  </Input>
+                </Col>
+              </FormGroup>
+              <Button>
+                Upload
+              </Button>
+          </Form>
+      </Container>
+
       </header>
     </div>
   );
