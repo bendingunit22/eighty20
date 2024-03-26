@@ -1,26 +1,36 @@
 import { FormGroup, Input, Form, Button, Col, Label, Container } from 'reactstrap';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from 'react';
+import EntryTable from './Components/EntryTable';
 
 
 function App() {
+  const [entries, setEntries] = useState([]);
+  
+  useEffect(() => {
+    fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev")
+    .then((response) => response.json())
+    .then((data) => {
+      //  console.log("network call")
+      //  console.log(data);
+       setEntries(data.body);
+    })
+    .catch((err) => {
+       console.log(err.message);
+    });
+  }, []);
+
   function handleSubmit(e) {
-    console.log(e)
     e.preventDefault();
 
     const form = e.target;
     const formData = new FormData(form)
     const formJson = Object.fromEntries(formData.entries());
 
-
-    // instantiate a headers object
     var myHeaders = new Headers();
-    // add content type header to object
     myHeaders.append("Content-Type", "application/json");
-    // using built in JSON utility package turn object to string and store in a variable
     var raw = JSON.stringify({"date":formJson.date,"easy":formJson.easy, "hard":formJson.hard, "kilometers":formJson.kilometers});
-    // create a JSON object with parameters for API call and store in a variable
-    console.log(raw)
     
     var requestOptions = {
         method: 'POST',
@@ -33,14 +43,14 @@ function App() {
     .then(response => response.text())
     .then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error));
-
-
   }
+
+  
 
   return (
     <div className="App">
       <header className="App-header">
-      <Container fluid>
+      <Container className='mainContainer' fluid>
         <Form onSubmit={handleSubmit}>
               <FormGroup row>
                 <Label
@@ -49,12 +59,13 @@ function App() {
                 >
                   Date
                 </Label>
-                <Col xl={10}>
+                <Col className='column' xl={10}>
                   <Input
                     id="date"
                     name="date"
                     placeholder="1970-01-01"
                     type="date"
+                    className='formEntry'
                   >
                   </Input>
                 </Col>
@@ -118,6 +129,14 @@ function App() {
               </Button>
           </Form>
       </Container>
+      <Container className='bottomContainer' fluid>
+        {  entries.length && 
+          <EntryTable data={entries}>
+          </EntryTable>
+        }
+      </Container>
+      <Col >
+      </Col>
 
       </header>
     </div>
