@@ -2,11 +2,7 @@ import {Table} from 'reactstrap'
 import Entry from './Entry';
 
 export default function EntryTable({data}) {
-    // console.log("entrytable")
-    // console.log({data}.data)
-    // console.log(JSON.parse({data}.data))
     const d = JSON.parse({data}.data)
-    console.log(d)
     return (
         <Table striped>
             <thead>

@@ -1,9 +1,9 @@
-import { FormGroup, Input, Form, Button, Col, Label, Container } from 'reactstrap';
+import {Container } from 'reactstrap';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
 import EntryTable from './Components/EntryTable';
-
+import SubmitForm from './Components/SubmitForm'
 
 function App() {
   const [entries, setEntries] = useState([]);
@@ -45,99 +45,21 @@ function App() {
     .catch(error => console.log('error', error));
   }
 
-  
-
   return (
     <div className="App">
       <header className="App-header">
-      <Container className='mainContainer' fluid>
-        <Form onSubmit={handleSubmit}>
-              <FormGroup row>
-                <Label
-                  for="date"
-                  xl={2}
-                >
-                  Date
-                </Label>
-                <Col className='column' xl={10}>
-                  <Input
-                    id="date"
-                    name="date"
-                    placeholder="1970-01-01"
-                    type="date"
-                    className='formEntry'
-                  >
-                  </Input>
-                </Col>
-              </FormGroup>
-              <FormGroup row>
-              <Label
-                  for="easy"
-                  sm={2}
-                >
-                  Easy
-                </Label>
-                <Col xl={10}
-                >
-                  <Input
-                    id="easy"
-                    name="easy"
-                    placeholder="0"
-                    type="integer"
-                  >
-                  </Input>
-                </Col>
-              </FormGroup>
-              <FormGroup row>
-              <Label
-                  for="hard"
-                  sm={2}
-                >
-                  Hard
-                </Label>
-                <Col xl={10}
-                >
-                  <Input
-                    id="hard"
-                    name="hard"
-                    placeholder="0"
-                    type="integer"
-                  >
-                  </Input>
-                </Col>
-              </FormGroup>
-              <FormGroup row>
-              <Label
-                  for="kilometers"
-                  sm={2}
-                >
-                  Kilometers
-                </Label>
-                <Col xl={10}
-                >
-                  <Input
-                    id="kilometers"
-                    name="kilometers"
-                    placeholder="0"
-                    type="float"
-                  >
-                  </Input>
-                </Col>
-              </FormGroup>
-              <Button>
-                Upload
-              </Button>
-          </Form>
-      </Container>
-      <Container className='bottomContainer' fluid>
+      <Container className='entryHistory' fluid>
         {  entries.length && 
-          <EntryTable data={entries}>
+          <EntryTable
+            data={entries}>
           </EntryTable>
         }
       </Container>
-      <Col >
-      </Col>
-
+      <Container className='mainContainer' fluid>
+        <SubmitForm
+          handler = {handleSubmit}
+        ></SubmitForm>
+      </Container>
       </header>
     </div>
   );
