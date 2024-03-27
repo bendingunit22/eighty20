@@ -7,19 +7,19 @@ import SubmitForm from './Components/SubmitForm'
 
 function App() {
   const [entries, setEntries] = useState([]);
-  
+  const [entryRefreshes, setEntryRefreshes] = useState(0);
+
+
   useEffect(() => {
     fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev")
     .then((response) => response.json())
     .then((data) => {
-      //  console.log("network call")
-      //  console.log(data);
        setEntries(data.body);
     })
     .catch((err) => {
        console.log(err.message);
     });
-  }, []);
+  }, [entryRefreshes]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -41,7 +41,7 @@ function App() {
 
     fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
     .then(response => response.text())
-    .then(result => alert(JSON.parse(result).body))
+    .then(_ => setEntryRefreshes(_ => _ + 1))
     .catch(error => console.log('error', error));
   }
 
