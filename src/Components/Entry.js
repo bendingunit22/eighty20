@@ -1,7 +1,5 @@
 export default function Entry({date, easy, hard, kilometers}) {
-
     return (
-        <tbody>
             <tr>
                 <td>
                 {date}
@@ -16,7 +14,5 @@ export default function Entry({date, easy, hard, kilometers}) {
                 {kilometers}
                 </td>
             </tr>
-        </tbody>
-
     );
 }

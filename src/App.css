@@ -21,10 +21,10 @@
   border-radius: 5px;
 }
 
-.bottomContainer {
+.entryHistory {
   background-color: rgb(238, 238, 238);
   margin: 20px;
-  /* padding-top: 100px; */
+  padding-top: 20px;
   max-width: 600px;
   border-radius: 5px;
 }
