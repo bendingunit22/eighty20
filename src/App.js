@@ -50,14 +50,14 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-      <Container className='entryHistory' fluid>
-        {  entries.length && 
+      {(entries || []).length > 0 &&
+        <Container className='entryHistory' fluid>
           <EntryTable
-            data={entries}
-            stats={stats}>
+              data={entries}
+              stats={stats}>
           </EntryTable>
-        }
       </Container>
+      }
       <Container className='mainContainer' fluid>
         <h5 className='entryHeading'>Submit a new entry</h5>
         <SubmitForm

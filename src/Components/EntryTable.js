@@ -3,7 +3,6 @@ import Entry from './Entry';
 
 export default function EntryTable({data, stats}) {
     const d = JSON.parse({data}.data)
-    console.log({stats}.stats)
     const s = JSON.parse({stats}.stats)
     return (
         <Table striped>
