@@ -7,7 +7,6 @@
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
-  /* align-items:center; */
   flex-direction: column;
   justify-content: center;
   width: auto;
@@ -31,4 +30,8 @@
 
 .row {
   padding-right: 5%;
+}
+
+.entryHeading {
+  padding-bottom: 10px;
 }

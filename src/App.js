@@ -7,19 +7,21 @@ import SubmitForm from './Components/SubmitForm'
 
 function App() {
   const [entries, setEntries] = useState([]);
-  
+  const [stats, setStats] = useState([]);
+  const [entryRefreshes, setEntryRefreshes] = useState(0);
+
+
   useEffect(() => {
     fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev")
     .then((response) => response.json())
     .then((data) => {
-      //  console.log("network call")
-      //  console.log(data);
        setEntries(data.body);
+       setStats(data.stats)
     })
     .catch((err) => {
        console.log(err.message);
     });
-  }, []);
+  }, [entryRefreshes]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -51,11 +53,13 @@ function App() {
       <Container className='entryHistory' fluid>
         {  entries.length && 
           <EntryTable
-            data={entries}>
+            data={entries}
+            stats={stats}>
           </EntryTable>
         }
       </Container>
       <Container className='mainContainer' fluid>
+        <h5 className='entryHeading'>Submit a new entry</h5>
         <SubmitForm
           handler = {handleSubmit}
         ></SubmitForm>

@@ -1,8 +1,10 @@
 import {Table} from 'reactstrap'
 import Entry from './Entry';
 
-export default function EntryTable({data}) {
+export default function EntryTable({data, stats}) {
     const d = JSON.parse({data}.data)
+    console.log({stats}.stats)
+    const s = JSON.parse({stats}.stats)
     return (
         <Table striped>
             <thead>
@@ -31,6 +33,13 @@ export default function EntryTable({data}) {
                             kilometers = {entry.kilometers.S}
                     ></Entry>) 
                 }
+                <Entry
+                    date = {s.needed}
+                    easy = {s.easy}
+                    hard = {s.hard}
+                    kilometers = {s.kilometers}
+                >    
+                </Entry>
             </tbody>
         </Table>
     );
