@@ -38,9 +38,26 @@ export default function EntryTable({data, stats}) {
                     easy = {s.easy}
                     hard = {s.hard}
                     kilometers = {s.kilometers}
-                >    
+                    isStatBar={true}
+                >
                 </Entry>
             </tbody>
+            <tfoot className="statsFooter">
+                    <tr>
+                        <th>
+                            Minutes needed
+                        </th>
+                        <th>
+                            Total easy min.
+                        </th>
+                        <th>
+                            Total hard min
+                        </th>
+                        <th>
+                            Avg. Km
+                        </th>
+                    </tr>
+                </tfoot>
         </Table>
     );
 }

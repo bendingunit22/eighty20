@@ -35,3 +35,12 @@
 .entryHeading {
   padding-bottom: 10px;
 }
+
+.statsBar {
+  border-color: rgb(117, 220, 182);
+  border-width: 2px;
+}
+
+.statsFooter {
+  --bs-table-bg: #dcdcdc;
+}
