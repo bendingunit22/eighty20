@@ -1,6 +1,6 @@
-export default function Entry({date, easy, hard, kilometers}) {
+export default function Entry({date, easy, hard, kilometers, isStatBar}) {
     return (
-            <tr>
+            <tr className={isStatBar ? "statsBar" : null}>
                 <td>
                 {date}
                 </td>
