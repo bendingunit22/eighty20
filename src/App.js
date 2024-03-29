@@ -43,7 +43,7 @@ function App() {
 
     fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
     .then(response => response.text())
-    .then(result => alert(JSON.parse(result).body))
+    .then(_ => setEntryRefreshes(_ => _ + 1))
     .catch(error => console.log('error', error));
   }
 
