@@ -51,7 +51,7 @@ export default function EntryTable({data, stats}) {
                             Total easy min.
                         </th>
                         <th>
-                            Total hard min
+                            Total hard min.
                         </th>
                         <th>
                             Avg. Km
