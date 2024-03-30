@@ -26,10 +26,10 @@ export default function EntryTable({data, stats}) {
                 { d.length > 0 &&
                     d.map(entry => 
                         <Entry 
-                            date = {entry.date.S}
-                            easy = {entry.easy.N}
-                            hard = {entry.hard.N}
-                            kilometers = {entry.kilometers.S}
+                            date = {entry[1].stringValue}
+                            easy = {entry[2].longValue}
+                            hard = {entry[3].longValue}
+                            kilometers = {entry[4].doubleValue}
                     ></Entry>) 
                 }
                 <Entry
