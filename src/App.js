@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
 import EntryTable from './Components/EntryTable';
 import SubmitForm from './Components/SubmitForm'
+import { DNA } from 'react-loader-spinner';
 
 function App() {
   const [entries, setEntries] = useState([]);
@@ -50,13 +51,17 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-      {(entries || []).length > 0 &&
+      {(entries || []).length > 0 ? (
         <Container className='entryHistory' fluid>
           <EntryTable
               data={entries}
               stats={stats}>
           </EntryTable>
-      </Container>
+      </Container>):(
+        <Container className='entryHistory' fluid>
+          <DNA></DNA>
+        </Container>
+      )
       }
       <Container className='mainContainer' fluid>
         <h5 className='entryHeading'>Submit a new entry</h5>
