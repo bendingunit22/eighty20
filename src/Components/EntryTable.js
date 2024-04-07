@@ -1,10 +1,10 @@
 import {Table} from 'reactstrap'
 import Entry from './Entry';
 
-export default function EntryTable({data, stats}) {
+export default function EntryTable({data, deleteHandler}) {
     const d = JSON.parse({data}.data)
-    const s = JSON.parse({stats}.stats)
     return (
+    <div>
         <Table striped>
             <thead>
                 <tr>
@@ -20,43 +20,26 @@ export default function EntryTable({data, stats}) {
                     <th>
                         Kilometers
                     </th>
+                    <th>
+                    </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody >
                 { d.length > 0 &&
-                    d.map(entry => 
-                        <Entry 
+                    d.map(entry =>
+                        <Entry
+                            key = {entry[0].stringValue}
+                            id = {entry[0].stringValue}
                             date = {entry[1].stringValue}
                             easy = {entry[2].longValue}
                             hard = {entry[3].longValue}
                             kilometers = {entry[4].doubleValue}
+                            deleteHandler={deleteHandler}
                     ></Entry>) 
                 }
-                <Entry
-                    date = {s.needed}
-                    easy = {s.easy}
-                    hard = {s.hard}
-                    kilometers = {s.kilometers}
-                    isStatBar={true}
-                >
-                </Entry>
             </tbody>
-            <tfoot className="statsFooter">
-                    <tr>
-                        <th>
-                            Minutes needed
-                        </th>
-                        <th>
-                            Total easy min.
-                        </th>
-                        <th>
-                            Total hard min.
-                        </th>
-                        <th>
-                            Avg. Km
-                        </th>
-                    </tr>
-                </tfoot>
+
         </Table>
+    </div>
     );
 }
