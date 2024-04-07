@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import EntryTable from './Components/EntryTable';
 import SummaryTable from './Components/SummaryTable';
 import SubmitForm from './Components/SubmitForm'
+import { DNA } from 'react-loader-spinner'
 
 function App() {
   const [entries, setEntries] = useState([]);
