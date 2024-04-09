@@ -6,12 +6,13 @@ import EntryTable from './Components/EntryTable';
 import SummaryTable from './Components/SummaryTable';
 import SubmitForm from './Components/SubmitForm'
 import { DNA } from 'react-loader-spinner'
+import EasyTimeSeries from './Components/EasyTimeSeries';
+
 
 function App() {
   const [entries, setEntries] = useState([]);
   const [stats, setStats] = useState([]);
   const [entryRefreshes, setEntryRefreshes] = useState(0);
-
 
   useEffect(() => {
     fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev")
@@ -70,12 +71,17 @@ function App() {
 
 
   return (
+   
+   
     <div className="App">
       <header className="App-header">
       {
           (entries || []).length > 0 ? (
             <div>
-            <Container className='entryContainer' fluid>  
+            <Container className='entryContainer' fluid>
+              <Container className='entryHistory' fluid>
+                <EasyTimeSeries data={entries}></EasyTimeSeries>
+              </Container>
               <Container className='entryHistory' fluid>
                 <EntryTable
                   data={entries}
@@ -103,6 +109,7 @@ function App() {
       </Container>
       </header>
     </div>
+
   );
 }
 
