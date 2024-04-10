@@ -65,12 +65,9 @@
   background-color: white;
 }
 
-.easyChart {
-  margin: 20px;
-}
-
 .responsiveWrapper {
   width: 300px;
-  height: 300px;
+  height: 350px;
   background-color: white;
+  padding: 20px;
 }
