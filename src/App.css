@@ -71,3 +71,7 @@
   background-color: white;
   padding: 20px;
 }
+
+.custom-tooltip {
+  background-color: rgba(0, 0, 0, 0.166);
+}

@@ -10,7 +10,6 @@ export default function EasyTimeSeries({data}){
     const minY = Math.min(...processed.map((d) => d.y));
     const maxY = Math.max(...processed.map((d) => d.y));
     const domain = Math.floor(Math.max(Math.abs(minY), Math.abs(maxY))/50)*50 + 50;
-    console.log(processed)
 
     const dateFormatter = (date_num) => {
         return new Date(date_num).toLocaleDateString('en-US')
@@ -31,7 +30,16 @@ export default function EasyTimeSeries({data}){
         }
       }
       
-      const off = gradientOffset();
+    const off = gradientOffset();
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+          return (
+            <div className="custom-tooltip">
+              <p className="label">{`Needed: ${payload[0].value}`}<br></br>{`${dateFormatter(label)}`}</p>
+            </div>
+          );
+        }
+    }
 
     return (
         <Container className="responsiveWrapper">
@@ -103,7 +111,7 @@ export default function EasyTimeSeries({data}){
                 dataKey="y"
                 stroke="url(#splitColor)" 
             />
-            <Tooltip labelFormatter={dateFormatter}></Tooltip>
+            <Tooltip content={<CustomTooltip />}></Tooltip>
             </LineChart>
         </ResponsiveContainer>
         </Container>
