@@ -1,16 +1,16 @@
 import React from 'react';
-import { ResponsiveContainer, CartesianGrid, Line, LineChart, ReferenceLine, XAxis, YAxis } from 'recharts';
+import { ResponsiveContainer, CartesianGrid, Line, LineChart, ReferenceLine, XAxis, YAxis, Tooltip } from 'recharts';
 import {Container} from 'reactstrap';
 
 
 export default function EasyTimeSeries({data}){
     const foo = JSON.parse({data}.data)
     const processed = foo.map((rec) => ({x: Date.parse(rec[1].stringValue), y: rec[5].longValue}));
-    console.log(processed)
-
     const minX = Math.min(...processed.map((d) => d.x));
     const minY = Math.min(...processed.map((d) => d.y));
-    console.log(minY)
+    const maxY = Math.max(...processed.map((d) => d.y));
+    const domain = Math.floor(Math.max(Math.abs(minY), Math.abs(maxY))/50)*50 + 50;
+    console.log(processed)
 
     const dateFormatter = (date_num) => {
         return new Date(date_num).toLocaleDateString('en-US')
@@ -39,7 +39,7 @@ export default function EasyTimeSeries({data}){
             className="easyChart"
             width = {600}
             height = "100%"
-            style={{paddingLeft: "20px", paddingRight: "20px"}}
+            style={{paddingLeft: "20px", paddingRight: "20px", paddingTop: "20px"}}
             >
             <LineChart
                 width={500}
@@ -47,7 +47,7 @@ export default function EasyTimeSeries({data}){
                 minWidth={500}
                 minHeight={300}
                 margin={{
-                    top: 10,
+                    top: 5,
                     right: 5,
                     left: 5,
                     bottom: 5,
@@ -57,7 +57,7 @@ export default function EasyTimeSeries({data}){
 
             <YAxis
                 dataKey="y"
-                domain={['auto', 'auto']}
+                domain={[-domain, domain]}
                 type="number"
                 label={{
                     value: `Easy minutes needed`,
@@ -68,7 +68,7 @@ export default function EasyTimeSeries({data}){
                 }}
                 allowDataOverflow={true}
                 strokeWidth={minX < 0 ? 0 : 1}
-                padding={{ top: 50 }}
+                tickMargin={15}
             />
 
             <XAxis
@@ -78,8 +78,8 @@ export default function EasyTimeSeries({data}){
                 tickFormatter={dateFormatter}
                 allowDataOverflow={true}
                 strokeWidth={minY < 0 ? 0 : 1}
+                tickMargin={15}
             />
-
             {minY < 0 && (
                 <ReferenceLine
                 y={0}
@@ -98,12 +98,12 @@ export default function EasyTimeSeries({data}){
             <Line
                 strokeWidth={2}
                 data={processed}
-                dot={false}
+                dot={{stroke: "black"}}
                 type="monotone"
                 dataKey="y"
                 stroke="url(#splitColor)" 
-                tooltipType="none"
             />
+            <Tooltip labelFormatter={dateFormatter}></Tooltip>
             </LineChart>
         </ResponsiveContainer>
         </Container>
