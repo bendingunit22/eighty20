@@ -9,7 +9,7 @@ export default function EntryTable({stats}) {
         <Table>
             <tbody>
                 <Entry
-                    date = {s.needed}
+                    date = {s.needed >= 0 ? s.needed: "+" + Math.abs(s.needed)}
                     easy = {s.easy}
                     hard = {s.hard}
                     kilometers = {s.kilometers}
