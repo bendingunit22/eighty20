@@ -7,12 +7,14 @@ import SummaryTable from './Components/SummaryTable';
 import SubmitForm from './Components/SubmitForm'
 import { DNA } from 'react-loader-spinner'
 import EasyTimeSeries from './Components/EasyTimeSeries';
+import { Button, ButtonGroup } from 'reactstrap';
 
 
 function App() {
   const [entries, setEntries] = useState([]);
   const [stats, setStats] = useState([]);
   const [entryRefreshes, setEntryRefreshes] = useState(0);
+  const [rSelected, setRSelected] = useState(0);
 
   useEffect(() => {
     fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev")
@@ -78,21 +80,47 @@ function App() {
       {
           (entries || []).length > 0 ? (
             <div>
-            <Container className='entryContainer' fluid>
-              <Container className='entryHistory' fluid>
-                <EasyTimeSeries data={entries}></EasyTimeSeries>
+              <Container className='entryContainer' fluid>
+               <Container className='buttonContainer' fluid>
+                  <ButtonGroup className="buttons">
+                    <Button
+                      outline
+                      onClick={() => setRSelected(0)}
+                      active={rSelected === 0}
+                    >
+                      Table
+                    </Button>
+                    <Button
+                      outline
+                      onClick={() => setRSelected(1)}
+                      active={rSelected === 1}
+                    >
+                      Chart
+                    </Button>
+                  </ButtonGroup>
+                </Container>
+                {
+                  rSelected === 1 ? 
+                  (
+                    <Container className='entryHistory' fluid>
+                      <EasyTimeSeries data={entries}></EasyTimeSeries>
+                    </Container>
+                  ) :
+                  (
+                  <div>
+                    <Container className='entryHistory' fluid>
+                      <EntryTable
+                        data={entries}
+                        deleteHandler={deleteEntry}>
+                      </EntryTable>
+                    </Container>
+                    <Container className='entryHistory' fluid>
+                      <SummaryTable stats={stats}></SummaryTable>
+                    </Container>
+                  </div>
+                  )
+                }
               </Container>
-              <Container className='entryHistory' fluid>
-                <EntryTable
-                  data={entries}
-                  deleteHandler={deleteEntry}>
-                </EntryTable>
-              </Container>
-              <Container className='entryHistory' fluid>
-              <SummaryTable stats={stats}>
-                </SummaryTable>
-              </Container>
-            </Container>
             </div>
         ):(
           <Container className='entryHistory' fluid>
