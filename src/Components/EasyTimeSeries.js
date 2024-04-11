@@ -7,6 +7,7 @@ export default function EasyTimeSeries({data}){
     const foo = JSON.parse({data}.data)
     const processed = foo.map((rec) => ({x: Date.parse(rec[1].stringValue), y: rec[5].longValue}));
     const minX = Math.min(...processed.map((d) => d.x));
+    const maxX = Math.max(...processed.map((d) => d.x));
     const minY = Math.min(...processed.map((d) => d.y));
     const maxY = Math.max(...processed.map((d) => d.y));
     const domain = Math.floor(Math.max(Math.abs(minY), Math.abs(maxY))/50)*50 + 50;
@@ -47,10 +48,10 @@ export default function EasyTimeSeries({data}){
             className="easyChart"
             width = {600}
             height = "100%"
-            style={{paddingLeft: "20px", paddingRight: "20px", paddingTop: "20px"}}
+            style={{paddingLeft: "5px"}}
             >
             <LineChart
-                width={500}
+                width={550}
                 height={300}
                 minWidth={500}
                 minHeight={300}
@@ -76,7 +77,7 @@ export default function EasyTimeSeries({data}){
                 }}
                 allowDataOverflow={true}
                 strokeWidth={minX < 0 ? 0 : 1}
-                tickMargin={15}
+                tickMargin={5}
             />
 
             <XAxis
