@@ -87,6 +87,7 @@ function App() {
                       outline
                       onClick={() => setRSelected(0)}
                       active={rSelected === 0}
+                      size='sm'
                     >
                       Table
                     </Button>
@@ -94,6 +95,7 @@ function App() {
                       outline
                       onClick={() => setRSelected(1)}
                       active={rSelected === 1}
+                      size='sm'
                     >
                       Chart
                     </Button>

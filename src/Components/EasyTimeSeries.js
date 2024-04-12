@@ -7,7 +7,6 @@ export default function EasyTimeSeries({data}){
     const foo = JSON.parse({data}.data)
     const processed = foo.map((rec) => ({x: Date.parse(rec[1].stringValue), y: rec[5].longValue}));
     const minX = Math.min(...processed.map((d) => d.x));
-    const maxX = Math.max(...processed.map((d) => d.x));
     const minY = Math.min(...processed.map((d) => d.y));
     const maxY = Math.max(...processed.map((d) => d.y));
     const domain = Math.floor(Math.max(Math.abs(minY), Math.abs(maxY))/50)*50 + 50;
