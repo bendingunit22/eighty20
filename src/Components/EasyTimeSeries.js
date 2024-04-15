@@ -6,6 +6,7 @@ import {Container} from 'reactstrap';
 export default function EasyTimeSeries({data}){
     const foo = JSON.parse({data}.data)
     const processed = foo.map((rec) => ({x: Date.parse(rec[1].stringValue), y: rec[5].longValue}));
+    console.log(processed)
     const minX = Math.min(...processed.map((d) => d.x));
     const minY = Math.min(...processed.map((d) => d.y));
     const maxY = Math.max(...processed.map((d) => d.y));

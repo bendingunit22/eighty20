@@ -8,13 +8,27 @@ import SubmitForm from './Components/SubmitForm'
 import { DNA } from 'react-loader-spinner'
 import EasyTimeSeries from './Components/EasyTimeSeries';
 import { Button, ButtonGroup } from 'reactstrap';
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+
 
 
 function App() {
-  const [entries, setEntries] = useState([]);
-  const [stats, setStats] = useState([]);
-  const [entryRefreshes, setEntryRefreshes] = useState(0);
-  const [rSelected, setRSelected] = useState(0);
+  const [ entries, setEntries ] = useState([]);
+  const [ stats, setStats ] = useState([]);
+  const [ entryRefreshes, setEntryRefreshes ] = useState(0);
+  const [ rSelected, setRSelected ] = useState(0);
+  const [ user, setUser ] = useState([]);
+  const [ profile, setProfile ] = useState([]);
+  
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log('Login Failed:', error)
+  });
+
+  const logOut = () => {
+    googleLogout();
+    setProfile(null);
+};
 
   useEffect(() => {
     fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev")
@@ -26,7 +40,21 @@ function App() {
     .catch((err) => {
        console.log(err.message);
     });
-  }, [entryRefreshes]);
+
+    fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+      headers: {
+        Authorization: `Bearer ${user.access_token}`,
+        Accept: 'application/json'
+      }})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        setProfile(data)
+        console.log(profile)
+      })
+      .catch((err) => console.log(err));
+    
+  }, [entryRefreshes, user, entries, stats]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -73,73 +101,88 @@ function App() {
 
 
   return (
-   
-   
     <div className="App">
-      <header className="App-header">
-      {
-          (entries || []).length > 0 ? (
-            <div>
-              <Container className='entryContainer' fluid>
-               <Container className='buttonContainer' fluid>
-                  <ButtonGroup className="buttons">
-                    <Button
-                      outline
-                      onClick={() => setRSelected(0)}
-                      active={rSelected === 0}
-                      size='sm'
-                    >
-                      Table
-                    </Button>
-                    <Button
-                      outline
-                      onClick={() => setRSelected(1)}
-                      active={rSelected === 1}
-                      size='sm'
-                    >
-                      Chart
-                    </Button>
-                  </ButtonGroup>
+      {profile ? (
+        <header className="App-header">
+          {
+            (entries || []).length > 0 ? (
+              <div>
+                <Container className='entryContainer' fluid>
+                  <Container className='buttonContainer' fluid>
+                      <Button className='logoutButton'
+                        onClick={logOut}
+                        size='sm'
+                        >
+                        Log out
+                        </Button>
+                  </Container>
+                  <Container className='buttonContainer' fluid>
+                    <ButtonGroup className="buttons">
+                      <Button
+                        outline
+                        onClick={() => setRSelected(0)}
+                        active={rSelected === 0}
+                        size='sm'
+                      >
+                        Table
+                      </Button>
+                      <Button
+                        outline
+                        onClick={() => setRSelected(1)}
+                        active={rSelected === 1}
+                        size='sm'
+                      >
+                        Chart
+                      </Button>
+                    </ButtonGroup>
+                  </Container>
+                  {
+                    rSelected === 1 ? 
+                    (
+                      <Container className='entryHistory' fluid>
+                        <EasyTimeSeries data={entries}></EasyTimeSeries>
+                      </Container>
+                    ) :
+                    (
+                    <div>
+                      <Container className='entryHistory' fluid>
+                        <EntryTable
+                          data={entries}
+                          deleteHandler={deleteEntry}>
+                        </EntryTable>
+                      </Container>
+                      <Container className='entryHistory' fluid>
+                        <SummaryTable stats={stats}></SummaryTable>
+                      </Container>
+                    </div>
+                    )
+                  }
                 </Container>
-                {
-                  rSelected === 1 ? 
-                  (
-                    <Container className='entryHistory' fluid>
-                      <EasyTimeSeries data={entries}></EasyTimeSeries>
-                    </Container>
-                  ) :
-                  (
-                  <div>
-                    <Container className='entryHistory' fluid>
-                      <EntryTable
-                        data={entries}
-                        deleteHandler={deleteEntry}>
-                      </EntryTable>
-                    </Container>
-                    <Container className='entryHistory' fluid>
-                      <SummaryTable stats={stats}></SummaryTable>
-                    </Container>
-                  </div>
-                  )
-                }
+              </div>
+            ):(
+              <Container className='entryHistory' fluid>
+                <DNA></DNA>
               </Container>
-            </div>
-        ):(
-          <Container className='entryHistory' fluid>
-            <DNA></DNA>
+            )
+          }
+          <Container className='mainContainer' fluid>
+            <h5 className='entryHeading'>Submit a new entry</h5>
+            <SubmitForm
+              handler = {handleSubmit}
+            ></SubmitForm>
           </Container>
-        )
-
-      }
-      <Container className='mainContainer' fluid>
-        <h5 className='entryHeading'>Submit a new entry</h5>
-        <SubmitForm
-          handler = {handleSubmit}
-        ></SubmitForm>
-      </Container>
-      </header>
+        </header>
+      ) : (
+        <header className="App-header">
+          <Button 
+            onClick={() => login()} 
+            style={{width:"15%", margin:"auto"}}
+          >
+          Sign in with Google
+          </Button>
+        </header>
+      )} 
     </div>
-
   );
 }
 

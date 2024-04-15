@@ -89,3 +89,8 @@
   text-align: right;
   margin-top: 10px;
 }
+
+.logoutButton {
+  --bs-btn-bg: #dc3545;
+  --bs-btn-hover-bg: #840a15;
+}
