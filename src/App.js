@@ -108,14 +108,24 @@ function App() {
             (entries || []).length > 0 ? (
               <div>
                 <Container className='entryContainer' fluid>
-                  <Container className='buttonContainer' fluid>
-                      <Button className='logoutButton'
-                        onClick={logOut}
-                        size='sm'
-                        >
-                        Log out
-                        </Button>
-                  </Container>
+                  <Container className='profileContainer'>
+                    <img className='profilePicture'
+                      src={profile.picture}
+                      width="42"
+                      height="42"
+                      style={{
+                        borderRadius: "50%"
+                      }}
+                    ></img> 
+                    </Container>
+                    <Container className='buttonContainer' fluid>
+                        {/* <Button className='logoutButton'
+                          onClick={logOut}
+                          size='sm'
+                          >
+                          Log out
+                          </Button> */}
+                    </Container>
                   <Container className='buttonContainer' fluid>
                     <ButtonGroup className="buttons">
                       <Button
