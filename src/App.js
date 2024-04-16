@@ -1,4 +1,4 @@
-import {Container} from 'reactstrap';
+import {Container, PopoverBody} from 'reactstrap';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
@@ -7,7 +7,7 @@ import SummaryTable from './Components/SummaryTable';
 import SubmitForm from './Components/SubmitForm'
 import { DNA } from 'react-loader-spinner'
 import EasyTimeSeries from './Components/EasyTimeSeries';
-import { Button, ButtonGroup } from 'reactstrap';
+import { Button, ButtonGroup, UncontrolledPopover } from 'reactstrap';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 
 
@@ -31,28 +31,29 @@ function App() {
 };
 
   useEffect(() => {
-    fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev")
-    .then((response) => response.json())
-    .then((data) => {
-       setEntries(data.body);
-       setStats(data.stats)
-    })
-    .catch((err) => {
-       console.log(err.message);
-    });
-
-    fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-      headers: {
-        Authorization: `Bearer ${user.access_token}`,
-        Accept: 'application/json'
-      }})
+    if (!entries || entries.length === 0) {
+      fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
-        setProfile(data)
-        console.log(profile)
+        setEntries(data.body);
+        setStats(data.stats)
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err.message);
+      });
+    }
+    if (!profile || profile.length === 0) {
+      fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+        headers: {
+          Authorization: `Bearer ${user.access_token}`,
+          Accept: 'application/json'
+        }})
+        .then((response) => response.json())
+        .then((data) => {
+          setProfile(data)
+        })
+        .catch((err) => console.log(err));
+    }
     
   }, [entryRefreshes, user, entries, stats]);
 
@@ -109,7 +110,14 @@ function App() {
               <div>
                 <Container className='entryContainer' fluid>
                   <Container className='profileContainer'>
+                  <button
+                    id='profileButton'
+                    style={{
+                      borderWidth: "0px",
+                      }}
+                  >
                     <img className='profilePicture'
+                      id='profilePic'
                       src={profile.picture}
                       width="42"
                       height="42"
@@ -117,15 +125,30 @@ function App() {
                         borderRadius: "50%"
                       }}
                     ></img> 
-                    </Container>
-                    <Container className='buttonContainer' fluid>
-                        {/* <Button className='logoutButton'
-                          onClick={logOut}
-                          size='sm'
-                          >
-                          Log out
-                          </Button> */}
-                    </Container>
+                   </button>
+                   <UncontrolledPopover
+                    placement="left"
+                    target="profileButton"
+                    trigger="click"
+                  >
+                    <PopoverBody>
+                      <div style={{textAlign: "left"}}>
+                        {profile.email}<br/>
+                        {profile.name}
+                      </div>
+                      <Container className='buttonContainer' style={{textAlign: "left", paddingLeft: "0px"}}fluid>
+                          <Button className='logoutButton'
+                            onClick={logOut}
+                            size='sm'
+                            >
+                            Log out
+                            </Button>
+                      </Container>
+                    </PopoverBody>
+                    </UncontrolledPopover>  
+                </Container>
+
+
                   <Container className='buttonContainer' fluid>
                     <ButtonGroup className="buttons">
                       <Button
