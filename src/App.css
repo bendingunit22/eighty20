@@ -86,7 +86,7 @@
 }
 
 .buttonContainer {
-  text-align: right;
+  /* text-align: right; */
   margin-top: 10px;
 }
 
@@ -107,4 +107,12 @@
 
 .profilePicture:hover {
   border-color: rgb(64, 64, 64);
+}
+
+.dropdown-menu.show {
+  background-color: #d9d9d9
+}
+
+.popover.show.bs-popover-auto {
+  margin-top: 10px
 }

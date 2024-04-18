@@ -8,6 +8,8 @@ import SubmitForm from './Components/SubmitForm'
 import { DNA } from 'react-loader-spinner'
 import EasyTimeSeries from './Components/EasyTimeSeries';
 import { Button, ButtonGroup, UncontrolledPopover } from 'reactstrap';
+import { Dropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 
 
@@ -19,6 +21,8 @@ function App() {
   const [ rSelected, setRSelected ] = useState(0);
   const [ user, setUser ] = useState([]);
   const [ profile, setProfile ] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
   
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
@@ -30,30 +34,34 @@ function App() {
     setProfile(null);
 };
 
+function getEntries() {
+  fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev")
+  .then((response) => response.json())
+  .then((data) => {
+    setEntries(data.body);
+    setStats(data.stats)
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+}
+
   useEffect(() => {
-    if (!entries || entries.length === 0) {
-      fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev")
+    getEntries();
+
+    fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+      headers: {
+        Authorization: `Bearer ${user.access_token}`,
+        Accept: 'application/json'
+      }})
       .then((response) => response.json())
       .then((data) => {
-        setEntries(data.body);
-        setStats(data.stats)
+        setProfile(data)
       })
-      .catch((err) => {
-        console.log(err.message);
+      .catch((err) => { 
+        login();
+        console.log(err)
       });
-    }
-    if (!profile || profile.length === 0) {
-      fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-        headers: {
-          Authorization: `Bearer ${user.access_token}`,
-          Accept: 'application/json'
-        }})
-        .then((response) => response.json())
-        .then((data) => {
-          setProfile(data)
-        })
-        .catch((err) => console.log(err));
-    }
     
   }, [entryRefreshes, user, entries, stats]);
 
@@ -77,8 +85,8 @@ function App() {
 
     fetch("https://7komdlerp2.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
     .then(response => response.text())
-    .then(_ => setEntryRefreshes(_ => _ + 1))
     .then(form.reset())
+    .then(_ => setEntryRefreshes(entryRefreshes + 1))
     .catch(error => console.log('error', error));
   }
 
@@ -147,27 +155,49 @@ function App() {
                     </PopoverBody>
                     </UncontrolledPopover>  
                 </Container>
-
-
                   <Container className='buttonContainer' fluid>
-                    <ButtonGroup className="buttons">
-                      <Button
-                        outline
-                        onClick={() => setRSelected(0)}
-                        active={rSelected === 0}
-                        size='sm'
-                      >
-                        Table
-                      </Button>
-                      <Button
-                        outline
-                        onClick={() => setRSelected(1)}
-                        active={rSelected === 1}
-                        size='sm'
-                      >
-                        Chart
-                      </Button>
-                    </ButtonGroup>
+                      <Row style={{paddingRight: "0px", marginRight: "0px"}}>
+                        <Col style={{textAlign: "left"}}>
+                          <Dropdown 
+                            className='viewDropdown' 
+                            size='sm' 
+                            isOpen={dropdownOpen} 
+                            toggle={toggle}
+                            >
+                              <DropdownToggle caret>
+                                Workout Type
+                              </DropdownToggle>
+                              <DropdownMenu container="body">
+                                <DropdownItem onClick={function noRefCheck(){}}>
+                                  Running
+                                </DropdownItem>
+                                <DropdownItem onClick={function noRefCheck(){}}>
+                                  Weight Training
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
+                        </Col>
+                        <Col style={{textAlign: "right"}}>
+                          <ButtonGroup className="chartButtons" style={{paddingRight: "0px"}}>
+                            <Button
+                              outline
+                              onClick={() => setRSelected(0)}
+                              active={rSelected === 0}
+                              size='sm'
+                            >
+                              Table
+                            </Button>
+                            <Button
+                              outline
+                              onClick={() => setRSelected(1)}
+                              active={rSelected === 1}
+                              size='sm'
+                            >
+                              Chart
+                            </Button>
+                          </ButtonGroup>
+                        </Col>
+                    </Row>
                   </Container>
                   {
                     rSelected === 1 ? 
