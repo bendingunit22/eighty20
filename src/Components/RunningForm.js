@@ -1,6 +1,6 @@
 import { FormGroup, Input, Form, Button, Col, Label } from 'reactstrap';
 
-export default function EntryTable({handler}) {
+export default function RunningForm({handler}) {
     return (
     <Form onSubmit={handler}>
         <FormGroup row>
