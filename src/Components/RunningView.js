@@ -7,14 +7,13 @@ import RunningForm from './RunningForm'
 import { DNA } from 'react-loader-spinner'
 import EasyTimeSeries from './EasyTimeSeries';
 
-export default function RunningView(){
+export default function RunningView({children}){
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggle = () => setDropdownOpen((prevState) => !prevState);
-    const [ rSelected, setRSelected ] = useState(0);
     const [ entries, setEntries ] = useState([]);
     const [ stats, setStats ] = useState([]);
     const [ entryRefreshes, setEntryRefreshes ] = useState(0);
-
+    const viewState = {children}.children
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -69,7 +68,7 @@ export default function RunningView(){
         .catch((err) => {
           console.log(err.message);
         });
-    
+
 
       })
 
@@ -80,7 +79,7 @@ export default function RunningView(){
               <div>
 
                   {
-                    rSelected === 1 ? 
+                    viewState[1] === 1 ? 
                     (
                       <Container className='entryHistory' fluid>
                         <EasyTimeSeries data={entries}></EasyTimeSeries>

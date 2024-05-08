@@ -11,7 +11,6 @@ import { Container, PopoverBody } from 'reactstrap';
 
 function App() {
   const [ activeView, setActiveView ] = useState('running')
-  const [ DynamicView, setDynamicView ] = useState(RunningView)
   const [ profile, setProfile ] = useState([]);
   const [ user, setUser ] = useState([]);
   const [ dropdownOpen, setDropdownOpen ] = useState(false);
@@ -48,8 +47,9 @@ function App() {
         console.log(err)
       });
 
-    setDynamicView(viewSelector[activeView])
-  }, [user]);
+      console.log("above :" + rSelected)
+
+  }, [user, rSelected]);
 
   return (
     <div className="App">
@@ -138,9 +138,11 @@ function App() {
                     </Col>
                 </Row>
             </Container>
-            <DynamicView>
-              user={user}
-            </DynamicView>
+            {typeof rSelected !== 'undefined' &&
+            <RunningView>
+              viewState={rSelected}
+            </RunningView>
+            }
           </Container>
         </header>
       ) : (
