@@ -13,6 +13,7 @@ export default function RunningView({children}){
     const [ entries, setEntries ] = useState([]);
     const [ stats, setStats ] = useState([]);
     const [ entryRefreshes, setEntryRefreshes ] = useState(0);
+    const [ needsRefresh, setNeedsRefresh ] = useState(false)
     const viewState = {children}.children
 
     function handleSubmit(e) {
@@ -67,8 +68,9 @@ export default function RunningView({children}){
         })
         .catch((err) => {
           console.log(err.message);
-        });
+        },[entries]);
 
+        setNeedsRefresh(false)
 
       })
 

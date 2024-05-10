@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
-import RunningView from './Components/RunningView'
+import DynamicView from './Components/DynamicView'
 import { Button, ButtonGroup, UncontrolledPopover } from 'reactstrap';
 import { Dropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
@@ -27,11 +27,6 @@ function App() {
     googleLogout();
     setProfile(null);
   };
-  
-  const viewSelector = {
-    'running': RunningView
-  }
-
 
   useEffect(() => {
     fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
@@ -46,10 +41,7 @@ function App() {
       .catch((err) => { 
         console.log(err)
       });
-
-      console.log("above :" + rSelected)
-
-  }, [user, rSelected]);
+  }, [user]);
 
   return (
     <div className="App">
@@ -107,10 +99,10 @@ function App() {
                             Workout Type
                             </DropdownToggle>
                             <DropdownMenu container="body">
-                            <DropdownItem onClick={function noRefCheck(){}}>
+                            <DropdownItem onClick={() => setActiveView('running')}>
                                 Running
                             </DropdownItem>
-                            <DropdownItem onClick={function noRefCheck(){}}>
+                            <DropdownItem onClick={() => setActiveView('weights')}>
                                 Weight Training
                             </DropdownItem>
                             </DropdownMenu>
@@ -139,9 +131,11 @@ function App() {
                 </Row>
             </Container>
             {typeof rSelected !== 'undefined' &&
-            <RunningView>
+            <DynamicView
               viewState={rSelected}
-            </RunningView>
+              viewType={activeView}
+            >
+            </DynamicView>
             }
           </Container>
         </header>
